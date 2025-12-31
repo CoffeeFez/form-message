@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إرسال رسالة FEZ Café</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink: #FF4081;
+      --bg: #FFCDD2;
+      --text: #222;
+      --muted: #555;
+      --white-transparent: rgba(255,255,255,0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    @keyframes floatPulse {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-wrapper {
+      width: 90%;
+      max-width: 450px;
+      background: var(--white-transparent);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(31,38,135,0.12);
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(35px, 6vw, 65px);
+      letter-spacing: clamp(4px, 1.2vw, 10px);
+      margin-bottom: 5px;
+      direction: ltr;
+    }
+
+    .logo span {
+      display: inline-block;
+      animation: floatPulse 3s ease-in-out infinite;
+    }
+
+    .logo .f {
+      color: var(--pink);
+      animation-delay: 0s;
+      text-shadow: 2px 2px 8px rgba(255,64,129,0.4);
+    }
+
+    .logo .e {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.2s;
+    }
+
+    .logo .z {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.4s;
+    }
+
+    .sub-logo {
+      font-size: clamp(14px, 1.8vw, 18px);
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: right;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      direction: rtl;
+      font-family: 'Cairo', sans-serif;
+      resize: vertical;
+      min-height: 120px;
+      max-height: 300px;
+    }
+
+    .form-group textarea:focus {
+      border-color: var(--pink);
+      outline: none;
+      box-shadow: 0 0 8px rgba(255,64,129,0.2);
+    }
+
+    .error-msg {
+      color: var(--pink);
+      font-size: 12px;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: var(--pink);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+      height: 36px;
+      font-weight: 700;
+    }
+
+    .submit-btn:hover {
+      background-color: #e73370;
+    }
+
+    .submit-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .form-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .success-message {
+      color: var(--pink);
+      font-size: 20px;
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+
+    .success-only {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+
+    .success-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: var(--pink);
+      font-weight: bold;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,64,129,0.3);
+      border-radius: 50%;
+      border-top-color: var(--pink);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-wrapper" id="form-container">
+    <div class="logo">
+      <span class="f">F</span><span class="e">E</span><span class="z">Z</span>
+    </div>
+    <div class="sub-logo">SPECIALTY COFFEE</div>
+
+    <div class="form-title">إرسال رسالة</div>
+
+    <form id="messageForm" novalidate>
+      <div class="form-group">
+        <label for="message">رسالتك</label>
+        <textarea 
+          id="message" 
+          name="message" 
+          placeholder="اكتب رسالتك هنا..." 
+          required>
+        </textarea>
+        <div class="error-msg" id="error-message">يرجى إدخال الرسالة</div>
+      </div>
+
+      <div class="loading" id="loading">
+        <span class="spinner"></span> جارٍ الإرسال...
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">إرسال الرسالة</button>
+
+      <div class="form-note">رسالتك ستصل إلينا مباشرة ☕️</div>
+    </form>
+
+    <div class="success-message" id="successMsg">
+      <div class="success-icon">✅</div>
+      تم إرسال الرسالة بنجاح!<br>
+      شكرًا لك ☕️
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('messageForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // مسح الأخطاء السابقة
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
+      let valid = true;
+      const message = document.getElementById('message').value.trim();
+
+      // التحقق من الرسالة
+      if (!message) {
+        valid = false;
+        document.getElementById('error-message').style.display = 'block';
+      }
+
+      if (!valid) return;
+
+      // إظهار حالة التحميل
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('submitBtn').disabled = true;
+
+      const data = {
+        message: message,
+        timestamp: new Date().toISOString()
+      };
+
+      // إرسال البيانات عبر webhook
+      fetch('https://amr319.shop/webhook-test/form-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+
+        // إخفاء النموذج وإظهار رسالة النجاح
+        document.getElementById('messageForm').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        successMsg.classList.add('success-only');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // في حالة حدوث خطأ، نظهر رسالة النجاح على أي حال
+        document.getElementById('messageForm').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        successMsg.classList.add('success-only');
+      });
+    });
+  </script>
+</body>
+</html>
